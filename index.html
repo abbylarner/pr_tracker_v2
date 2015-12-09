@@ -1,0 +1,148 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>PR Tracker V2</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		<nav>
+			<a href="#login">Login</a>
+			<a href="#register">Register</a>
+			<a href="#dashboard">Dashboard</a>
+			<a href="#settings">Settings</a>
+		</nav>
+		<section class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12">
+					<div id="alertMessage">
+					</div>
+				</div>
+			</div>
+		</section>
+		<main>
+		<section id="loginPage">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-12">
+						Login
+						<form method="POST">
+							<input type="email" placeholder="Email Address" id="loginEmail">
+							<input type="password" placeholder="Password" id="loginPassword">
+							<button type="submit" class="btn btn-primary" id="loginSubmit">Login</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section id="registerPage">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-12">
+						Register
+						<form method="POST">
+							<input type="email" placeholder="Email Address" id="registerEmail">
+							<input type="password" placeholder="Password" id="registerPassword">
+							<button type="submit" class="btn btn-primary" id="registerSubmit">Sign Up</button>
+						</form>
+						<div>
+							<p>Already registered?</p>
+							<a href="#login" class="btn btn-default">Login</a>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section id="dashboardPage">
+				<p>dashboard</p>
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newPr">
+				Add New PR
+				</button>
+				<div id="prList">
+				</div>
+				<div class="modal fade" id="newPr" tabindex="-1" role="dialog" aria-labelledby="AddNewPr">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">Add New Pr</h4>
+							</div>
+							<div class="modal-body">
+								<div id="newPrAlert"></div>
+								<form method="POST" id="newPrForm">
+									<input type="text" placeholder="Lift Name" class="form-control" id="newLiftName" required>
+									<div class="btn-group" data-toggle="buttons">
+									  <label class="btn btn-primary active" id="newKg">
+									    <input type="radio" name="options" autocomplete="off" checked> Kilograms
+									  </label>
+									  <label class="btn btn-primary" id="newLb">
+									    <input type="radio" name="options" autocomplete="off"> Pounds
+									  </label>
+									</div>
+									<input type="text" id="newliftWeight" class="form-control" placeholder="Weight" required>
+									<input type="date" id="newPrDate" class="form-control"required>
+									<button type="submit" class="btn btn-primary" id="newPrSubmit">Add PR</button>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section id="liftPage">
+				<p>lift page</p>
+				<h1 id="liftPageTitle"></h1>
+				<div id="currentPr"></div>
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#updatePr">
+				Update Lift PR
+				</button>
+				<h3>PR Log</h3>
+				<div class="prLog"></div>
+				<div class="modal fade" id="updatePr" tabindex="-1" role="dialog" aria-labelledby="UpdatePr">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">Update Pr</h4>
+							</div>
+							<div class="modal-body">
+								<div id="newPrAlert"></div>
+								<form method="POST" id="newPrForm">
+									<div class="btn-group" data-toggle="buttons">
+									  <label class="btn btn-primary active" id="updateKg">
+									    <input type="radio" name="options" autocomplete="off" checked> Kilograms
+									  </label>
+									  <label class="btn btn-primary" id="updateLb">
+									    <input type="radio" name="options" autocomplete="off"> Pounds
+									  </label>
+									</div>
+									<input type="text" id="updateLiftWeight" class="form-control" placeholder="Weight" required>
+									<input type="date" id="updateLiftWeight" class="form-control"required>
+									<button type="submit" class="btn btn-primary" id="updatePrSubmit">Add PR</button>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section id="settingsPage">
+				settings
+			</section>
+			</main>
+			
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+			<script type="text/javascript" src="js/underscore.min.js"></script>
+			<script type="text/javascript" src="js/backbone.min.js"></script>
+			<script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+			<!-- Latest compiled and minified JavaScript -->
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+			<script type="text/javascript" src="js/main.js"></script>
+			
+		</body>
+	</html>
