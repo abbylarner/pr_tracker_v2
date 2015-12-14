@@ -173,7 +173,7 @@ var Router = Backbone.Router.extend({
 				function cb(err, prResults, userResults) {
 					var metric = '';
 					var prItem = '';
-					var sameLift = _.groupBy(results, function(lift) {
+					var sameLift = _.groupBy(prResults, function(lift) {
 						return lift.liftNameResult.toLowerCase();
 					});
 					for (var key in sameLift) {
@@ -280,8 +280,8 @@ var Router = Backbone.Router.extend({
 			var hashId = window.location.hash.split('/')[1];
 			var currentPr = '';
 
-			for (i = 0; i < results.length; i++) {
-				object = results[i];
+			for (i = 0; i < prResults.length; i++) {
+				object = prResults[i];
 				if (object.objectId === hashId) {
 					$('#liftPageTitle').html(object.liftNameResult);
 					currentPr += '<h3>' + object.liftWeightResult + '</h3><p>' + object.dateFormatted + '</p>';
