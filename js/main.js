@@ -188,152 +188,184 @@ var Router = Backbone.Router.extend({
 						var maxLiftId = maxLiftGroup.objectId;
 
 						if (currentUser.get('weightSetting') === 'kilograms') {
-							
+
 							maxLiftWeight = parseFloat((maxLiftWeight * 100 / 100).toFixed(2));
 							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a>';
-							
-							} else {
-								maxLiftWeight = parseFloat((maxLiftWeight * 2.2 * 100 / 100).toFixed(2));
-								prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a>';
 
-								}
-
-
-							}
-
-							$('#prList').html(prItem);
-
-						}
-
-						queryPrObject(cb);
-
-					} else {
-						alertMessage('#alertMessage', 'There was an error getting your PR\'s', 'alert-danger');
-					}
-				}
-
-				getPrList();
-
-				//Add New PR
-				$('#newPrForm').submit(function(e) {
-					e.preventDefault();
-
-					var PrObject = Parse.Object.extend("prObject");
-					var prObject = new PrObject();
-					var err = false;
-					var match = false;
-					var currentUser = Parse.User.current();
-					var query = new Parse.Query(PrObject);
-					query.equalTo('user', currentUser);
-					query.include('user');
-					var prItem = '';
-
-					query.find({
-						success: function(results) {
-							var newLiftName = $('#newLiftName').val().toLowerCase();
-							prObject.set('liftName', newLiftName);
-
-							var metric = setMetric($('#newKg'), $('#newLb'));
-							prObject.set('liftMetric', metric);
-
-							var liftWeight = Number($('#newliftWeight').val());
-							if (liftWeight === null || isNaN(liftWeight)) {
-								alertMessage('#newPrAlert', 'Please enter a valid lift weight.', 'alert-danger');
-								err = true;
-							} else if (metric === 'pounds') {
-								prObject.set('liftWeight', liftWeight / 2.2046);
-							}
-							else {
-								prObject.set('liftWeight', liftWeight);
-							}
-
-							var prDate = new Date($('#newPrDate').val());
-							var timestamp = Date.parse(prDate);
-
-							if (isNaN(timestamp) === false) {
-								prObject.set('prDate', prDate);
-							} else {
-								alertMessage('#newPrAlert', 'Please enter a valid date.', 'alert-danger');
-								err = true;
-							}
-
-							prObject.set('user', currentUser);
-
-							if (err === true) {
-								alertMessage('#alertMessage', 'There was an error processing the form.', 'alert-danger');
-							} else {
-								prObject.save(null, {
-									success: function(prObject) {
-										$('#newPr').modal('hide');
-										getPrList();
-										alertMessage('#alertMessage', 'Congrats on your new PR!', 'alert-success');
-									},
-									error: function(prObject, error) {
-										alertMessage('#alertMessage', 'There was an error saving your PR.', 'alert-danger');
-									}
-								});
-							}
-						},
-						error: function(error) {}
-					});
-				});
-			},
-
-			liftPage: function(page) {
-					$('main section, #alertMessage').hide();
-					$('#liftPage').show();
-					var currentUser = Parse.User.current();
-
-					function cb(err, prResults, userResults) {
-						var hashId = window.location.hash.split('/')[1];
-						var currentPr = '';
-
-						for (i = 0; i < prResults.length; i++) {
-							object = prResults[i];
-							if (object.objectId === hashId) {
-								$('#liftPageTitle').html(object.liftNameResult);
-
-								if(currentUser.get('weightSetting') === 'kilograms'){
-									currentPr += '<h3>' + object.liftWeightResult + ' ' + object.liftMetricResult + '</h3><p>' + object.dateFormatted + '</p>';
-								}
-								else{
-									lbWeight = parseFloat((object.liftWeightResult * 2.2046));
-									currentPr += '<h3>' + lbWeight + ' ' + object.liftMetricResult + '</h3><p>' + object.dateFormatted + '</p>';
-								}
-							}
-						}
-						$('#currentPr').html(currentPr);
-					}
-
-					queryPrObject(cb);
-
-				},
-
-				settings: function() {
-					$('main section, #alertMessage').hide();
-					$('#settingsPage').show();
-					var currentUser = Parse.User.current();
-
-
-					changeMetric('#setKg', '#setLb');
-
-					function cb(err, prResults, userResults) {
-						if (currentUser.get('weightSetting') === 'kilograms') {
-							$('#setKg').addClass('active');
-							$('#setLb').removeClass('active');
 						} else {
-							$('#setKg').removeClass('active');
-							$('#setLb').addClass('active');
+							maxLiftWeight = parseFloat((maxLiftWeight * 2.2 * 100 / 100).toFixed(2));
+							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a>';
+
 						}
+
 
 					}
 
-					queryPrObject(cb);
+					$('#prList').html(prItem);
 
 				}
 
-	});
+				queryPrObject(cb);
 
-			var router = new Router();
+			} else {
+				alertMessage('#alertMessage', 'There was an error getting your PR\'s', 'alert-danger');
+			}
+		}
 
-			Backbone.history.start();
+		getPrList();
+
+		//Add New PR
+		$('#newPrForm').submit(function(e) {
+			e.preventDefault();
+
+			var PrObject = Parse.Object.extend("prObject");
+			var prObject = new PrObject();
+			var err = false;
+			var match = false;
+			var currentUser = Parse.User.current();
+			var query = new Parse.Query(PrObject);
+			query.equalTo('user', currentUser);
+			query.include('user');
+			var prItem = '';
+
+			query.find({
+				success: function(results) {
+					var newLiftName = $('#newLiftName').val().toLowerCase();
+					prObject.set('liftName', newLiftName);
+
+					var metric = setMetric($('#newKg'), $('#newLb'));
+					prObject.set('liftMetric', metric);
+
+					var liftWeight = Number($('#newliftWeight').val());
+					if (liftWeight === null || isNaN(liftWeight)) {
+						alertMessage('#newPrAlert', 'Please enter a valid lift weight.', 'alert-danger');
+						err = true;
+					} else if (metric === 'pounds') {
+						prObject.set('liftWeight', liftWeight / 2.2046);
+					} else {
+						prObject.set('liftWeight', liftWeight);
+					}
+
+					var prDate = new Date($('#newPrDate').val());
+					var timestamp = Date.parse(prDate);
+
+					if (isNaN(timestamp) === false) {
+						prObject.set('prDate', prDate);
+					} else {
+						alertMessage('#newPrAlert', 'Please enter a valid date.', 'alert-danger');
+						err = true;
+					}
+
+					prObject.set('user', currentUser);
+
+					if (err === true) {
+						alertMessage('#alertMessage', 'There was an error processing the form.', 'alert-danger');
+					} else {
+						prObject.save(null, {
+							success: function(prObject) {
+								$('#newPr').modal('hide');
+								getPrList();
+								alertMessage('#alertMessage', 'Congrats on your new PR!', 'alert-success');
+							},
+							error: function(prObject, error) {
+								alertMessage('#alertMessage', 'There was an error saving your PR.', 'alert-danger');
+							}
+						});
+					}
+				},
+				error: function(error) {}
+			});
+		});
+	},
+
+	liftPage: function(page) {
+		$('main section, #alertMessage').hide();
+		$('#liftPage').show();
+		var currentUser = Parse.User.current();
+
+		function cb(err, prResults, userResults) {
+			var hashId = window.location.hash.split('/')[1];
+			var currentPr = '';
+
+
+			for (i = 0; i < prResults.length; i++) {
+				object = prResults[i];
+
+				var sameLift = _.groupBy(prResults, function(lift) {
+					return lift.liftNameResult.toLowerCase();
+				});
+
+				for (var key in sameLift) {
+
+					var liftGroups = sameLift[key];
+					console.log(liftGroups[i]);
+					
+
+					// if (liftGroups[i].liftNameResult === object.liftNameResult) {
+					// console.log(liftGroups[i]);
+
+
+					// 	// if (currentUser.get('weightSetting') === 'kilograms') {
+
+					// 	// 	maxLiftWeight = parseFloat((maxLiftWeight * 100 / 100).toFixed(2));
+					// 	// 	prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a>';
+
+					// 	// } else {
+					// 	// 	maxLiftWeight = parseFloat((maxLiftWeight * 2.2 * 100 / 100).toFixed(2));
+					// 	// 	prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a>';
+
+					// 	// }
+					// }
+
+
+				}
+
+				if (object.objectId === hashId) {
+					$('#liftPageTitle').html(object.liftNameResult);
+
+					if (currentUser.get('weightSetting') === 'kilograms') {
+						currentPr += '<h3>' + object.liftWeightResult + ' ' + object.liftMetricResult + '</h3><p>' + object.dateFormatted + '</p>';
+					} else {
+						lbWeight = parseFloat((object.liftWeightResult * 2.2046));
+						currentPr += '<h3>' + lbWeight + ' ' + object.liftMetricResult + '</h3><p>' + object.dateFormatted + '</p>';
+					}
+				}
+			}
+
+
+
+			$('#currentPr').html(currentPr);
+		}
+
+		queryPrObject(cb);
+
+	},
+
+	settings: function() {
+		$('main section, #alertMessage').hide();
+		$('#settingsPage').show();
+		var currentUser = Parse.User.current();
+
+
+		changeMetric('#setKg', '#setLb');
+
+		function cb(err, prResults, userResults) {
+			if (currentUser.get('weightSetting') === 'kilograms') {
+				$('#setKg').addClass('active');
+				$('#setLb').removeClass('active');
+			} else {
+				$('#setKg').removeClass('active');
+				$('#setLb').addClass('active');
+			}
+
+		}
+
+		queryPrObject(cb);
+
+	}
+
+});
+
+var router = new Router();
+
+Backbone.history.start();
