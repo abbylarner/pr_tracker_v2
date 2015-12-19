@@ -286,6 +286,14 @@ var Router = Backbone.Router.extend({
 		var currentUser = Parse.User.current();
 		var hashId = window.location.hash.split('/')[1];
 
+		$('#updatePrForm').submit(function(e){
+			e.preventDefault();
+
+			var updatePrWeight = $('#updateLiftWeight').val();
+			var updatePrDate = $('#updatePrDate').val();
+			console.log(updatePrDate);
+		});
+		
 
 		var PrObject = Parse.Object.extend("prObject");
 		var query = new Parse.Query(PrObject);
@@ -352,6 +360,7 @@ var Router = Backbone.Router.extend({
 			}
 		});
 
+		
 	},
 
 	settings: function() {
