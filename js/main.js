@@ -281,63 +281,76 @@ var Router = Backbone.Router.extend({
 	liftPage: function(page) {
 		$('main section, #alertMessage').hide();
 		$('#liftPage').show();
+		var currentPr = '';
+		var currentPrName = '';
 		var currentUser = Parse.User.current();
-
-		function cb(err, prResults, userResults) {
-			var hashId = window.location.hash.split('/')[1];
-			var currentPr = '';
+		var hashId = window.location.hash.split('/')[1];
 
 
-			for (i = 0; i < prResults.length; i++) {
-				object = prResults[i];
-
-				var sameLift = _.groupBy(prResults, function(lift) {
-					return lift.liftNameResult.toLowerCase();
-				});
-
-				for (var key in sameLift) {
-
-					var liftGroups = sameLift[key];
-					console.log(liftGroups[i]);
-					
-
-					// if (liftGroups[i].liftNameResult === object.liftNameResult) {
-					// console.log(liftGroups[i]);
-
-
-					// 	// if (currentUser.get('weightSetting') === 'kilograms') {
-
-					// 	// 	maxLiftWeight = parseFloat((maxLiftWeight * 100 / 100).toFixed(2));
-					// 	// 	prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a>';
-
-					// 	// } else {
-					// 	// 	maxLiftWeight = parseFloat((maxLiftWeight * 2.2 * 100 / 100).toFixed(2));
-					// 	// 	prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a>';
-
-					// 	// }
-					// }
-
-
-				}
-
-				if (object.objectId === hashId) {
-					$('#liftPageTitle').html(object.liftNameResult);
+		var PrObject = Parse.Object.extend("prObject");
+		var query = new Parse.Query(PrObject);
+		query.equalTo('user', currentUser);
+		query.include('user');
+		query.equalTo("objectId", hashId);
+		query.find({
+			success: function(results) {
+				for (var i = 0; i < results.length; i++) {
+					var object = results[i];
+					var weightSetting = currentUser.get('weightSetting');
+					var dateFormatted = convertDate(object.get('prDate'));
+					currentPrName += object.get('liftName');
 
 					if (currentUser.get('weightSetting') === 'kilograms') {
-						currentPr += '<h3>' + object.liftWeightResult + ' ' + object.liftMetricResult + '</h3><p>' + object.dateFormatted + '</p>';
+						currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + object.get('liftWeight') + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
 					} else {
-						lbWeight = parseFloat((object.liftWeightResult * 2.2046));
-						currentPr += '<h3>' + lbWeight + ' ' + object.liftMetricResult + '</h3><p>' + object.dateFormatted + '</p>';
+						lbWeight = parseFloat((object.get('liftWeight') * 2.2046));
+						currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
 					}
 				}
+				$('#currentPr').html(currentPr);
+
+				function cb(err, prResults, userResults) {
+					var prLog = '';
+					var currentUser = Parse.User.current();
+					var weightSetting = currentUser.get('weightSetting');
+					var sameLift = _.groupBy(prResults, function(lift) {
+						return lift.liftNameResult.toLowerCase();
+					});
+
+					for (var key in sameLift) {
+
+						var liftGroups = sameLift[key];
+
+						for (i = 0; i < liftGroups.length; i++) {
+
+							if (liftGroups[i].liftNameResult === currentPrName) {
+
+								liftResponse = liftGroups[i];
+
+								if (currentUser.get('weightSetting') === 'kilograms') {
+									prLog += '<div class="log-item"><h3>' + liftResponse.liftWeightResult + ' ' + weightSetting + '</h3><p>' + liftResponse.dateFormatted + '</p></div>';
+								} else {
+									lbWeight = parseFloat((liftResponse.liftWeightResult * 2.2046));
+									prLog += '<div class="log-item"><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + liftResponse.dateFormatted + '</p></div>';
+								}
+							}
+
+						}
+
+
+					}
+
+					$('#prLog').html(prLog);
+
+
+				}
+
+				queryPrObject(cb);
+			},
+			error: function(error) {
+				alert("Error: " + error.code + " " + error.message);
 			}
-
-
-
-			$('#currentPr').html(currentPr);
-		}
-
-		queryPrObject(cb);
+		});
 
 	},
 

@@ -9,3 +9,9 @@ main {
 #alertMessage {
 	display: none;
 }
+
+.log-item {
+	&:first-child {
+		display: none;
+	}
+}

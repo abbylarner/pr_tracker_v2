@@ -5247,4 +5247,7 @@ main section {
 #alertMessage {
   display: none; }
 
+.log-item:first-child {
+  display: none; }
+
 /*# sourceMappingURL=style.css.map */
