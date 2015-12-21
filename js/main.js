@@ -353,14 +353,17 @@ var Router = Backbone.Router.extend({
 						prObject.save(null, {
 							success: function(prObject) {
 								$('#updatePr').modal('hide');
-													if(updatePrWeight > currentPrWeight){
-						if (currentUser.get('weightSetting') === 'kilograms') {
-						currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + updatePrWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
-						} else {
-							lbWeight = parseFloat(updatePrWeight * 2.2046);
-							currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
-						}
-					}
+								queryPrObject(cb);
+								if (updatePrWeight > currentPrWeight) {
+									console.log('more');
+									if (currentUser.get('weightSetting') === 'kilograms') {
+										currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + updatePrWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
+									} else {
+										lbWeight = parseFloat(updatePrWeight * 2.2046);
+										currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
+									}
+									$('#currentPr').replaceWith(currentPr);
+								}
 								alertMessage('#alertMessage', 'Congrats on your new PR!', 'alert-success');
 							},
 							error: function(prObject, error) {
