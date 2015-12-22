@@ -190,11 +190,11 @@ var Router = Backbone.Router.extend({
 						if (currentUser.get('weightSetting') === 'kilograms') {
 
 							maxLiftWeight = parseFloat((maxLiftWeight * 100 / 100).toFixed(2));
-							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a>';
+							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem" data-id="' + maxLiftId + '"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a><button type="submit" class="btn btn-danger delete">Delete</button>';
 
 						} else {
 							maxLiftWeight = parseFloat((maxLiftWeight * 2.2 * 100 / 100).toFixed(2));
-							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a>';
+							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a><button type="submit" class="btn btn-danger delete">Delete</button>';
 
 						}
 
@@ -202,6 +202,23 @@ var Router = Backbone.Router.extend({
 					}
 
 					$('#prList').html(prItem);
+
+					$('.delete').click(function(e) {
+						e.preventDefault();
+
+						if (confirm('Are you sure you would like to delete this PR?')) {
+							$(this).destroy({
+								success: function(myObject) {
+									alertMessage('#alertMessage', 'Your PR has been deleted.', 'alert-success');
+								},
+								error: function(myObject, error) {
+									alertMessage('#alertMessage', 'There was an error deleting your PR.', 'alert-danger');
+
+								}
+							});
+						}
+
+					});
 
 				}
 
