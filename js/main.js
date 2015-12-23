@@ -176,6 +176,7 @@ var Router = Backbone.Router.extend({
 					var sameLift = _.groupBy(prResults, function(lift) {
 						return lift.liftNameResult.toLowerCase();
 					});
+
 					for (var key in sameLift) {
 
 
@@ -190,11 +191,11 @@ var Router = Backbone.Router.extend({
 						if (currentUser.get('weightSetting') === 'kilograms') {
 
 							maxLiftWeight = parseFloat((maxLiftWeight * 100 / 100).toFixed(2));
-							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem" data-id="' + maxLiftId + '"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a><button type="submit" class="btn btn-danger delete">Delete</button>';
+							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem" data-id="' + maxLiftId + '"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete">Delete</button></a>';
 
 						} else {
 							maxLiftWeight = parseFloat((maxLiftWeight * 2.2 * 100 / 100).toFixed(2));
-							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p></a><button type="submit" class="btn btn-danger delete">Delete</button>';
+							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete">Delete</button></a>';
 
 						}
 
@@ -206,12 +207,15 @@ var Router = Backbone.Router.extend({
 					$('.delete').click(function(e) {
 						e.preventDefault();
 
+						var deleteId = $(this).parent('.prItem');
+
 						if (confirm('Are you sure you would like to delete this PR?')) {
-							$(this).destroy({
-								success: function(myObject) {
+							prObject.destroy({
+								success: function(prObject) {
+									$(deleteId).addClass('hidden');
 									alertMessage('#alertMessage', 'Your PR has been deleted.', 'alert-success');
 								},
-								error: function(myObject, error) {
+								error: function(prObject, error) {
 									alertMessage('#alertMessage', 'There was an error deleting your PR.', 'alert-danger');
 
 								}
