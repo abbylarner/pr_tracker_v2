@@ -191,11 +191,11 @@ var Router = Backbone.Router.extend({
 						if (currentUser.get('weightSetting') === 'kilograms') {
 
 							maxLiftWeight = parseFloat((maxLiftWeight * 100 / 100).toFixed(2));
-							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem" data-id="' + maxLiftId + '"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete">Delete</button></a>';
+							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem" data-id="' + maxLiftId + '"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete hidden">Delete</button></a>';
 
 						} else {
 							maxLiftWeight = parseFloat((maxLiftWeight * 2.2 * 100 / 100).toFixed(2));
-							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete">Delete</button></a>';
+							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete hidden">Delete</button></a>';
 
 						}
 
@@ -203,6 +203,12 @@ var Router = Backbone.Router.extend({
 					}
 
 					$('#prList').html(prItem);
+
+					$('#editButton').click(function(e) {
+						e.preventDefault();
+
+						$('.delete').toggleClass('hidden');
+					});
 
 					$('.delete').click(function(e) {
 						e.preventDefault();
