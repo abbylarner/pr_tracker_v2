@@ -2,15 +2,16 @@
 <html>
 	<head>
 		<title>PR Tracker V2</title>
-		<!-- Latest compiled and minified CSS -->		
+		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="css/style.css">
 	</head>
 	<body>
 		<nav>
-			<a href="#login">Login</a>
-			<a href="#register">Register</a>
-			<a href="#dashboard">Dashboard</a>
-			<a href="#settings">Settings</a>
+			<a href="#login" id="loginNav">Login</a>
+			<a href="#register" id="registerNav">Register</a>
+			<a href="#dashboard" id="dashboardNav">Dashboard</a>
+			<a href="#settings" id="settingsNav">Settings</a>
+			<a href="#login" id="logoutNav">Logout</a>
 		</nav>
 		<section class="container-fluid">
 			<div class="row">
@@ -74,12 +75,12 @@
 								<form method="POST" id="newPrForm">
 									<input type="text" placeholder="Lift Name" class="form-control" id="newLiftName" required>
 									<div class="btn-group" data-toggle="buttons">
-									  <label class="btn btn-primary active" id="newKg">
-									    <input type="radio" name="options" autocomplete="off" checked> Kilograms
-									  </label>
-									  <label class="btn btn-primary" id="newLb">
-									    <input type="radio" name="options" autocomplete="off"> Pounds
-									  </label>
+										<label class="btn btn-primary active" id="newKg">
+											<input type="radio" name="options" autocomplete="off" checked> Kilograms
+										</label>
+										<label class="btn btn-primary" id="newLb">
+											<input type="radio" name="options" autocomplete="off"> Pounds
+										</label>
 									</div>
 									<input type="text" id="newliftWeight" class="form-control" placeholder="Weight" required>
 									<input type="date" id="newPrDate" class="form-control"required>
@@ -113,12 +114,12 @@
 								<div id="newPrAlert"></div>
 								<form method="POST" id="updatePrForm">
 									<div class="btn-group" data-toggle="buttons">
-									  <label class="btn btn-primary active" id="updateKg">
-									    <input type="radio" name="options" autocomplete="off" checked> Kilograms
-									  </label>
-									  <label class="btn btn-primary" id="updateLb">
-									    <input type="radio" name="options" autocomplete="off"> Pounds
-									  </label>
+										<label class="btn btn-primary active" id="updateKg">
+											<input type="radio" name="options" autocomplete="off" checked> Kilograms
+										</label>
+										<label class="btn btn-primary" id="updateLb">
+											<input type="radio" name="options" autocomplete="off"> Pounds
+										</label>
 									</div>
 									<input type="text" id="updateLiftWeight" class="form-control" placeholder="Weight" required>
 									<input type="date" id="updatePrDate" class="form-control"required>
@@ -134,8 +135,8 @@
 			</section>
 			<section id="settingsPage">
 				<div class="btn-group" role="group">
-					  <button type="button" class="btn btn-default" id="setKg">Kilograms</button>
-					  <button type="button" class="btn btn-default" id="setLb">Pounds</button>
+					<button type="button" class="btn btn-default" id="setKg">Kilograms</button>
+					<button type="button" class="btn btn-default" id="setLb">Pounds</button>
 				</div>
 			</section>
 			</main>
@@ -145,8 +146,7 @@
 			<script type="text/javascript" src="js/backbone.min.js"></script>
 			<!-- Latest compiled and minified JavaScript -->
 			<script src="js/bootstrap.min.js"></script>
-						<script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
-
+			<script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
 			<script type="text/javascript" src="js/main.js"></script>
 			
 		</body>

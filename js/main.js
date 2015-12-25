@@ -8,6 +8,29 @@ function alertMessage(alertId, message, type) {
 	$(alertId).show();
 }
 
+//Nav Display Function
+
+function navDisplay() {
+	var currentUser = Parse.User.current();
+
+	if (currentUser) {
+		$('#registerNav, #loginNav').hide();
+	} else {
+		$('#settingsNav, #dashboardNav, #logoutNav').hide();
+	}
+}
+
+
+//Logout 
+
+function logout() {
+	$('#logoutNav').click(function() {
+		Parse.User.logOut();
+		navDisplay();
+	});
+}
+
+
 
 //Check Weight Metric
 function setMetric(kgBtn, lbBtn) {
@@ -112,6 +135,7 @@ var Router = Backbone.Router.extend({
 	login: function() {
 		$('main section, #alertMessage').hide();
 		$('#loginPage').show();
+		logout();
 
 		$('#loginPage form').submit(function(e) {
 			e.preventDefault();
@@ -135,6 +159,7 @@ var Router = Backbone.Router.extend({
 	register: function() {
 		$('main section, #alertMessage').hide();
 		$('#registerPage').show();
+		logout();
 
 		$('#registerPage form').submit(function(e) {
 			e.preventDefault();
@@ -161,6 +186,7 @@ var Router = Backbone.Router.extend({
 	dashboard: function() {
 		$('main section, #alertMessage').hide();
 		$('#dashboardPage').show();
+		logout();
 
 		//Get PR List
 		function getPrList() {
@@ -308,6 +334,8 @@ var Router = Backbone.Router.extend({
 	liftPage: function(page) {
 		$('main section, #alertMessage').hide();
 		$('#liftPage').show();
+		logout();
+
 		var currentPr = '';
 		var currentPrName = '';
 		var currentPrWeight = '';
@@ -449,6 +477,8 @@ var Router = Backbone.Router.extend({
 	settings: function() {
 		$('main section, #alertMessage').hide();
 		$('#settingsPage').show();
+		logout();
+
 		var currentUser = Parse.User.current();
 
 
