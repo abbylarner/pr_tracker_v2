@@ -5253,4 +5253,7 @@ main section {
 .hidden {
   display: none; }
 
+#settingsNav, #logoutNav, #dashboardNav {
+  display: none; }
+
 /*# sourceMappingURL=style.css.map */

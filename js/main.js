@@ -8,25 +8,13 @@ function alertMessage(alertId, message, type) {
 	$(alertId).show();
 }
 
-//Nav Display Function
-
-function navDisplay() {
-	var currentUser = Parse.User.current();
-
-	if (currentUser) {
-		$('#registerNav, #loginNav').hide();
-	} else {
-		$('#settingsNav, #dashboardNav, #logoutNav').hide();
-	}
-}
-
 
 //Logout 
 
 function logout() {
 	$('#logoutNav').click(function() {
 		Parse.User.logOut();
-		navDisplay();
+		$('#dashboardNav, #settingsNav, #logoutNav').hide();
 	});
 }
 
@@ -145,6 +133,7 @@ var Router = Backbone.Router.extend({
 
 			Parse.User.logIn(username, password, {
 				success: function(user) {
+					$('#dashboardNav, #settingsNav, #logoutNav').show();
 					router.navigate('dashboard', {
 						trigger: true
 					});
