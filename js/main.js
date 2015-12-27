@@ -1,5 +1,6 @@
 Parse.initialize("Mte8Yv712ZgDySEst9N4Y85IZmsKECtQqcvGOKHw", "M5nmSje1x3G4rOtNVJjfOtPuG2r1hlgURvfbKvUg");
 
+
 //Alert Function
 function alertMessage(alertId, message, type) {
 	$(alertId).html(message);
@@ -8,13 +9,27 @@ function alertMessage(alertId, message, type) {
 	$(alertId).show();
 }
 
+//Login
+function navActivate() {
+	var currentUser = Parse.User.current();
+	if (currentUser) {
+		$('#dashboardNav, #settingsNav, #logoutNav').show();
+		$('#loginNav, #registerNav').hide();
+	} else {
+		$('#dashboardNav, #settingsNav, #logoutNav').hide();
+		$('#loginNav, #registerNav').show();
+	}
+}
+
+navActivate();
+logout();
 
 //Logout 
 
 function logout() {
 	$('#logoutNav').click(function() {
 		Parse.User.logOut();
-		$('#dashboardNav, #settingsNav, #logoutNav').hide();
+		navActivate();
 	});
 }
 
@@ -116,14 +131,13 @@ var Router = Backbone.Router.extend({
 		login: 'login',
 		register: 'register',
 		dashboard: 'dashboard',
-		"dashboard/:page": 'liftPage',
+		"dashboard/:liftName": 'liftPage',
 		settings: 'settings',
 	},
 
 	login: function() {
 		$('main section, #alertMessage').hide();
 		$('#loginPage').show();
-		logout();
 
 		$('#loginPage form').submit(function(e) {
 			e.preventDefault();
@@ -133,7 +147,8 @@ var Router = Backbone.Router.extend({
 
 			Parse.User.logIn(username, password, {
 				success: function(user) {
-					$('#dashboardNav, #settingsNav, #logoutNav').show();
+					navActivate();
+
 					router.navigate('dashboard', {
 						trigger: true
 					});
@@ -175,7 +190,6 @@ var Router = Backbone.Router.extend({
 	dashboard: function() {
 		$('main section, #alertMessage').hide();
 		$('#dashboardPage').show();
-		logout();
 
 		//Get PR List
 		function getPrList() {
@@ -206,11 +220,11 @@ var Router = Backbone.Router.extend({
 						if (currentUser.get('weightSetting') === 'kilograms') {
 
 							maxLiftWeight = parseFloat((maxLiftWeight * 100 / 100).toFixed(2));
-							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem" data-id="' + maxLiftId + '"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete hidden">Delete</button></a>';
+							prItem += '<a href="#dashboard/' + maxLiftName + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete hidden">Delete</button></a>';
 
 						} else {
 							maxLiftWeight = parseFloat((maxLiftWeight * 2.2 * 100 / 100).toFixed(2));
-							prItem += '<a href="#dashboard/' + maxLiftId + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete hidden">Delete</button></a>';
+							prItem += '<a href="#dashboard/' + maxLiftName + '" class="prItem"><h1>' + maxLiftName + '</h1><p>' + maxLiftWeight + ' ' + maxLiftMetric + '</p><p>' + maxLiftDate + '</p><button type="submit" class="btn btn-danger delete hidden">Delete</button></a>';
 
 						}
 
@@ -320,7 +334,7 @@ var Router = Backbone.Router.extend({
 		});
 	},
 
-	liftPage: function(page) {
+	liftPage: function(liftName) {
 		$('main section, #alertMessage').hide();
 		$('#liftPage').show();
 		logout();
@@ -329,31 +343,52 @@ var Router = Backbone.Router.extend({
 		var currentPrName = '';
 		var currentPrWeight = '';
 		var currentUser = Parse.User.current();
-		var hashId = window.location.hash.split('/')[1];
-
 
 		var PrObject = Parse.Object.extend("prObject");
 		var query = new Parse.Query(PrObject);
 		query.equalTo('user', currentUser);
 		query.include('user');
-		query.equalTo("objectId", hashId);
+		query.equalTo("liftName", liftName);
 		query.find({
 			success: function(results) {
-				for (var i = 0; i < results.length; i++) {
-					var object = results[i];
-					var weightSetting = currentUser.get('weightSetting');
+				var maxPrObject = _.max(results, function findMax(prObject) {
+					return prObject.get('liftWeight');
+				});
+
+				var maxLiftWeight = maxPrObject.get('liftWeight');
+				var weightSetting = currentUser.get('weightSetting');
+				var maxDateFormatted = convertDate(maxPrObject.get('prDate'));
+				currentPrName += maxPrObject.get('liftName');
+				currentPrWeight += maxPrObject.get('liftWeight');
+
+				if (currentUser.get('weightSetting') === 'kilograms') {
+					currentPr += '<h1>' + maxPrObject.get('liftName') + '</h1><h3>' + maxLiftWeight + ' ' + weightSetting + '</h3><p>' + maxDateFormatted + '</p>';
+				} else {
+					lbWeight = parseFloat((maxPrObject.get('liftWeight') * 2.2046));
+					currentPr += '<h1>' + maxPrObject.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + maxDateFormatted + '</p>';
+				}
+
+				$('#currentPr').html(currentPr);
+
+				prLog = '';
+				var sortDate = _.sortBy(results, function findDate(logDate){
+					return Number((logDate.get('prDate')))* -1;
+				});
+
+				for (i = 0; i < sortDate.length; i++) {
+
+					object = sortDate[i];
 					var dateFormatted = convertDate(object.get('prDate'));
-					currentPrName += object.get('liftName');
-					currentPrWeight += object.get('liftWeight');
 
 					if (currentUser.get('weightSetting') === 'kilograms') {
-						currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + object.get('liftWeight') + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
+						prLog += '<div class="log-item"><h3>' + object.get('liftWeight') + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p></div>';
 					} else {
 						lbWeight = parseFloat((object.get('liftWeight') * 2.2046));
-						currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
+						prLog += '<div class="log-item"><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p></div>';
 					}
 				}
-				$('#currentPr').html(currentPr);
+				$('#prLog').html(prLog);
+
 
 				$('#updatePrForm').submit(function(e) {
 					e.preventDefault();
@@ -418,43 +453,27 @@ var Router = Backbone.Router.extend({
 
 				});
 
-				function cb(err, prResults, userResults) {
-					var prLog = '';
-					var currentUser = Parse.User.current();
-					var weightSetting = currentUser.get('weightSetting');
-					var sameLift = _.groupBy(prResults, function(lift) {
-						return lift.liftNameResult.toLowerCase();
-					});
+				// function cb(err, prResults, userResults) {
+				// 	var prLog = '';
+				// 	var currentUser = Parse.User.current();
+				// 	var weightSetting = currentUser.get('weightSetting');
+				// 	var sameLift = _.groupBy(prResults, function(lift) {
+				// 		return lift.liftNameResult.toLowerCase();
+				// 	});
 
-					for (var key in sameLift) {
+				// 	for (var key in sameLift) {
 
-						var liftGroups = sameLift[key];
-
-						for (i = 0; i < liftGroups.length; i++) {
-
-							if (liftGroups[i].liftNameResult === currentPrName) {
-
-								liftResponse = liftGroups[i];
-
-								if (currentUser.get('weightSetting') === 'kilograms') {
-									prLog += '<div class="log-item"><h3>' + liftResponse.liftWeightResult + ' ' + weightSetting + '</h3><p>' + liftResponse.dateFormatted + '</p></div>';
-								} else {
-									lbWeight = parseFloat((liftResponse.liftWeightResult * 2.2046));
-									prLog += '<div class="log-item"><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + liftResponse.dateFormatted + '</p></div>';
-								}
-							}
-
-						}
+				// 		var liftGroups = sameLift[key];
 
 
-					}
 
-					$('#prLog').html(prLog);
+				// 	}
+
+				// 	$('#prLog').html(prLog);
 
 
-				}
+				// }
 
-				queryPrObject(cb);
 			},
 			error: function(error) {
 				alert("Error: " + error.code + " " + error.message);

@@ -10,16 +10,14 @@ main {
 	display: none;
 }
 
-.log-item {
-	&:first-child {
-		display: none;
-	}
-}
 
 .hidden {
 	display: none;
 }
 
-#settingsNav, #logoutNav, #dashboardNav {
-	display: none;
+nav {
+	a {
+			display: none;
+
+	}
 }

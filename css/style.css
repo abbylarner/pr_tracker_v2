@@ -5247,13 +5247,10 @@ main section {
 #alertMessage {
   display: none; }
 
-.log-item:first-child {
-  display: none; }
-
 .hidden {
   display: none; }
 
-#settingsNav, #logoutNav, #dashboardNav {
+nav a {
   display: none; }
 
 /*# sourceMappingURL=style.css.map */
