@@ -245,14 +245,32 @@ var Router = Backbone.Router.extend({
 						var deleteId = $(this).parent('.prItem');
 
 						if (confirm('Are you sure you would like to delete this PR?')) {
-							prObject.destroy({
-								success: function(prObject) {
-									$(deleteId).addClass('hidden');
-									alertMessage('#alertMessage', 'Your PR has been deleted.', 'alert-success');
-								},
-								error: function(prObject, error) {
-									alertMessage('#alertMessage', 'There was an error deleting your PR.', 'alert-danger');
+							var liftNameDestroy = $(this).parent('a').attr('href').split('/')[1];
+							
 
+							var PrObject = Parse.Object.extend("prObject");
+							var query = new Parse.Query(PrObject);
+							query.equalTo("liftName", liftNameDestroy);
+							query.find({
+								success: function(results) {
+
+									for (i = 0; i < results.length; i++){
+										object = results[i];
+										object.destroy({
+											success: function(prObject) {
+												$(deleteId).addClass('hidden');
+												alertMessage('#alertMessage', 'Your PR has been deleted.', 'alert-success');
+											},
+											error: function(prObject, error) {
+												alertMessage('#alertMessage', 'There was an error deleting your PR.', 'alert-danger');
+
+											}
+										});
+									}
+									
+								},
+								error: function(error) {
+									alert("Error: " + error.code + " " + error.message);
 								}
 							});
 						}
@@ -371,8 +389,8 @@ var Router = Backbone.Router.extend({
 				$('#currentPr').html(currentPr);
 
 				prLog = '';
-				var sortDate = _.sortBy(results, function findDate(logDate){
-					return Number((logDate.get('prDate')))* -1;
+				var sortDate = _.sortBy(results, function findDate(logDate) {
+					return Number((logDate.get('prDate'))) * -1;
 				});
 
 				for (i = 0; i < sortDate.length; i++) {
@@ -452,27 +470,6 @@ var Router = Backbone.Router.extend({
 					}
 
 				});
-
-				// function cb(err, prResults, userResults) {
-				// 	var prLog = '';
-				// 	var currentUser = Parse.User.current();
-				// 	var weightSetting = currentUser.get('weightSetting');
-				// 	var sameLift = _.groupBy(prResults, function(lift) {
-				// 		return lift.liftNameResult.toLowerCase();
-				// 	});
-
-				// 	for (var key in sameLift) {
-
-				// 		var liftGroups = sameLift[key];
-
-
-
-				// 	}
-
-				// 	$('#prLog').html(prLog);
-
-
-				// }
 
 			},
 			error: function(error) {
