@@ -246,15 +246,16 @@ var Router = Backbone.Router.extend({
 
 						if (confirm('Are you sure you would like to delete this PR?')) {
 							var liftNameDestroy = $(this).parent('a').attr('href').split('/')[1];
-							
+
 
 							var PrObject = Parse.Object.extend("prObject");
 							var query = new Parse.Query(PrObject);
+
 							query.equalTo("liftName", liftNameDestroy);
 							query.find({
 								success: function(results) {
 
-									for (i = 0; i < results.length; i++){
+									for (i = 0; i < results.length; i++) {
 										object = results[i];
 										object.destroy({
 											success: function(prObject) {
@@ -267,7 +268,7 @@ var Router = Backbone.Router.extend({
 											}
 										});
 									}
-									
+
 								},
 								error: function(error) {
 									alert("Error: " + error.code + " " + error.message);
@@ -388,29 +389,34 @@ var Router = Backbone.Router.extend({
 
 				$('#currentPr').html(currentPr);
 
-				prLog = '';
-				var sortDate = _.sortBy(results, function findDate(logDate) {
-					return Number((logDate.get('prDate'))) * -1;
-				});
+				function prLog(){
+					prLog = '';
+					var sortDate = _.sortBy(results, function findDate(logDate) {
+						return Number((logDate.get('prDate'))) * -1;
+					});
 
-				for (i = 0; i < sortDate.length; i++) {
+					for (i = 0; i < sortDate.length; i++) {
 
-					object = sortDate[i];
-					var dateFormatted = convertDate(object.get('prDate'));
+						object = sortDate[i];
+						var dateFormatted = convertDate(object.get('prDate'));
 
-					if (currentUser.get('weightSetting') === 'kilograms') {
-						prLog += '<div class="log-item"><h3>' + object.get('liftWeight') + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p></div>';
-					} else {
-						lbWeight = parseFloat((object.get('liftWeight') * 2.2046));
-						prLog += '<div class="log-item"><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p></div>';
+						if (currentUser.get('weightSetting') === 'kilograms') {
+							prLog += '<div class="log-item"><h3>' + object.get('liftWeight') + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p></div>';
+						} else {
+							lbWeight = parseFloat((object.get('liftWeight') * 2.2046));
+							prLog += '<div class="log-item"><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p></div>';
+						}
 					}
+					$('#prLog').html(prLog);
 				}
-				$('#prLog').html(prLog);
+
+				prLog();
 
 
 				$('#updatePrForm').submit(function(e) {
 					e.preventDefault();
 
+					prLog();
 					var PrObject = Parse.Object.extend("prObject");
 					var prObject = new PrObject();
 
@@ -450,7 +456,7 @@ var Router = Backbone.Router.extend({
 						prObject.save(null, {
 							success: function(prObject) {
 								$('#updatePr').modal('hide');
-								queryPrObject(cb);
+
 								if (updatePrWeight > currentPrWeight) {
 									console.log('more');
 									if (currentUser.get('weightSetting') === 'kilograms') {
