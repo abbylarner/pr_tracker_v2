@@ -389,7 +389,7 @@ var Router = Backbone.Router.extend({
 
 				$('#currentPr').html(currentPr);
 
-				function prLog(){
+				function prList(){
 					prLog = '';
 					var sortDate = _.sortBy(results, function findDate(logDate) {
 						return Number((logDate.get('prDate'))) * -1;
@@ -410,13 +410,13 @@ var Router = Backbone.Router.extend({
 					$('#prLog').html(prLog);
 				}
 
-				prLog();
+				prList();
 
 
 				$('#updatePrForm').submit(function(e) {
 					e.preventDefault();
 
-					prLog();
+					prList();
 					var PrObject = Parse.Object.extend("prObject");
 					var prObject = new PrObject();
 
@@ -456,9 +456,8 @@ var Router = Backbone.Router.extend({
 						prObject.save(null, {
 							success: function(prObject) {
 								$('#updatePr').modal('hide');
-
+								var dateFormatted = convertDate(prObject.get('prDate'));
 								if (updatePrWeight > currentPrWeight) {
-									console.log('more');
 									if (currentUser.get('weightSetting') === 'kilograms') {
 										currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + updatePrWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
 									} else {
