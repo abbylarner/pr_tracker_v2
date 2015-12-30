@@ -384,9 +384,9 @@ var Router = Backbone.Router.extend({
 					currentPrWeight += maxPrObject.get('liftWeight');
 
 					if (currentUser.get('weightSetting') === 'kilograms') {
-						currentPr += '<h1>' + maxPrObject.get('liftName') + '</h1><h3>' + maxLiftWeight + ' ' + weightSetting + '</h3><p>' + maxDateFormatted + '</p>';
+						currentPr += '<h1>' + maxPrObject.get('liftName') + '</h1><h3>' + parseFloat(maxLiftWeight*100/100).toFixed(2) + ' ' + weightSetting + '</h3><p>' + maxDateFormatted + '</p>';
 					} else {
-						lbWeight = parseFloat((maxPrObject.get('liftWeight') * 2.2046));
+						lbWeight = parseFloat((maxPrObject.get('liftWeight') * 2.2046)*100/100).toFixed(2);
 						currentPr += '<h1>' + maxPrObject.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + maxDateFormatted + '</p>';
 					}
 
@@ -409,9 +409,9 @@ var Router = Backbone.Router.extend({
 						var dateFormatted = convertDate(object.get('prDate'));
 
 						if (currentUser.get('weightSetting') === 'kilograms') {
-							prLog += '<div class="log-item"><h3>' + object.get('liftWeight') + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p></div>';
+							prLog += '<div class="log-item"><h3>' + parseFloat(object.get('liftWeight')*100/100).toFixed(2) + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p></div>';
 						} else {
-							lbWeight = parseFloat((object.get('liftWeight') * 2.2046));
+							lbWeight = parseFloat((object.get('liftWeight') * 2.2046)*100/100).toFixed(2);
 							prLog += '<div class="log-item"><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p></div>';
 						}
 					}
