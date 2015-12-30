@@ -358,7 +358,6 @@ var Router = Backbone.Router.extend({
 		$('#liftPage').show();
 		logout();
 
-		var currentPr = '';
 		var currentPrName = '';
 		var currentPrWeight = '';
 		var currentUser = Parse.User.current();
@@ -370,26 +369,35 @@ var Router = Backbone.Router.extend({
 		query.equalTo("liftName", liftName);
 		query.find({
 			success: function(results) {
-				var maxPrObject = _.max(results, function findMax(prObject) {
-					return prObject.get('liftWeight');
-				});
-
-				var maxLiftWeight = maxPrObject.get('liftWeight');
 				var weightSetting = currentUser.get('weightSetting');
-				var maxDateFormatted = convertDate(maxPrObject.get('prDate'));
-				currentPrName += maxPrObject.get('liftName');
-				currentPrWeight += maxPrObject.get('liftWeight');
 
-				if (currentUser.get('weightSetting') === 'kilograms') {
-					currentPr += '<h1>' + maxPrObject.get('liftName') + '</h1><h3>' + maxLiftWeight + ' ' + weightSetting + '</h3><p>' + maxDateFormatted + '</p>';
-				} else {
-					lbWeight = parseFloat((maxPrObject.get('liftWeight') * 2.2046));
-					currentPr += '<h1>' + maxPrObject.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + maxDateFormatted + '</p>';
+
+				function maxLiftMain(prObject) {
+					var currentPr = '';
+					var maxPrObject = _.max(results, function findMax(prObject) {
+						return prObject.get('liftWeight');
+					});
+
+					var maxLiftWeight = maxPrObject.get('liftWeight');
+					var maxDateFormatted = convertDate(maxPrObject.get('prDate'));
+					currentPrName += maxPrObject.get('liftName');
+					currentPrWeight += maxPrObject.get('liftWeight');
+
+					if (currentUser.get('weightSetting') === 'kilograms') {
+						currentPr += '<h1>' + maxPrObject.get('liftName') + '</h1><h3>' + maxLiftWeight + ' ' + weightSetting + '</h3><p>' + maxDateFormatted + '</p>';
+					} else {
+						lbWeight = parseFloat((maxPrObject.get('liftWeight') * 2.2046));
+						currentPr += '<h1>' + maxPrObject.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + maxDateFormatted + '</p>';
+					}
+
+					$('#currentPr').html(currentPr);
+					
 				}
 
-				$('#currentPr').html(currentPr);
+				maxLiftMain();
 
-				function prList(){
+
+				function prList() {
 					prLog = '';
 					var sortDate = _.sortBy(results, function findDate(logDate) {
 						return Number((logDate.get('prDate'))) * -1;
@@ -416,7 +424,6 @@ var Router = Backbone.Router.extend({
 				$('#updatePrForm').submit(function(e) {
 					e.preventDefault();
 
-					prList();
 					var PrObject = Parse.Object.extend("prObject");
 					var prObject = new PrObject();
 
@@ -456,16 +463,24 @@ var Router = Backbone.Router.extend({
 						prObject.save(null, {
 							success: function(prObject) {
 								$('#updatePr').modal('hide');
+
+
+								results.push(prObject);
+								prList();
+								maxLiftMain();
+
+
 								var dateFormatted = convertDate(prObject.get('prDate'));
-								if (updatePrWeight > currentPrWeight) {
-									if (currentUser.get('weightSetting') === 'kilograms') {
-										currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + updatePrWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
-									} else {
-										lbWeight = parseFloat(updatePrWeight * 2.2046);
-										currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
-									}
-									$('#currentPr').replaceWith(currentPr);
-								}
+								// if (updatePrWeight > currentPrWeight) {
+								// 	if (currentUser.get('weightSetting') === 'kilograms') {
+								// 		currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + updatePrWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
+								// 	} else {
+								// 		lbWeight = parseFloat(updatePrWeight * 2.2046);
+								// 		currentPr += '<h1>' + object.get('liftName') + '</h1><h3>' + lbWeight + ' ' + weightSetting + '</h3><p>' + dateFormatted + '</p>';
+								// 	}
+
+
+								// }
 								alertMessage('#alertMessage', 'Congrats on your new PR!', 'alert-success');
 							},
 							error: function(prObject, error) {
