@@ -90,3 +90,13 @@
 - demonstrative
 - human
 - work
+- largest
+- most
+- prime
+- elite
+- champion
+- first
+- foremost
+- prize-winning
+- record-breaking
+- unsurpassed
