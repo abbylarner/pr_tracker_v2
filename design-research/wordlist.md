@@ -64,3 +64,14 @@ heave
 hoist
 raise
 support
+
+fun
+game
+play
+swell
+athlete
+entertainment
+adventure
+winning
+compete
+fight
