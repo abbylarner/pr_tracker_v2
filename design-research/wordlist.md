@@ -9,3 +9,14 @@ compete
 personal
 best
 record
+
+freedom
+happiness
+intelligence
+security
+strength
+wealth
+self
+care
+medicine
+prevent
