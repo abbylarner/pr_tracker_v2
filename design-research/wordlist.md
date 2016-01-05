@@ -20,3 +20,14 @@ self
 care
 medicine
 prevent
+
+beauty
+capability
+competence
+shape
+ability
+aptitude
+endurance
+excellence
+flexibility
+vigor
