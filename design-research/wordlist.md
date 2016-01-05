@@ -110,3 +110,14 @@
 - chronicle
 - history
 - set
+
+- sweat
+- hard
+- exercise
+- push
+- flex
+- stretch
+- frown
+- groan
+- breathe
+- grunt
