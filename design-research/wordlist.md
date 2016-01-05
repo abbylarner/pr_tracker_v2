@@ -10,7 +10,6 @@
 - personal
 - best
 - record
-
 - freedom
 - happiness
 - intelligence
@@ -21,7 +20,6 @@
 - care
 - medicine
 - prevent
-
 - beauty
 - capability
 - competence
@@ -32,7 +30,6 @@
 - excellence
 - flexibility
 - vigor
-
 - center
 - club
 - facility
@@ -43,7 +40,6 @@
 - active
 - buff
 - pump
-
 - gravity
 - heft
 - load
@@ -54,7 +50,6 @@
 - loss
 - gain
 - resistance
-
 - bear
 - boost
 - crank
@@ -65,7 +60,6 @@
 - hoist
 - raise
 - support
-
 - fun
 - game
 - play
@@ -74,5 +68,45 @@
 - entertainment
 - adventure
 - winning
-- compete
 - fight
+- contend
+- race
+- strive
+- contest
+- program
+- defend
+- dispute
+- match
+- oppose
+- league
+- struggle
+- essential
+- individual
+- movable
+- physical
+- private
+- collective
+- compound
+- demonstrative
+- human
+- work
+- largest
+- most
+- prime
+- elite
+- champion
+- first
+- foremost
+- prize-winning
+- record-breaking
+- unsurpassed
+- break
+- achievement
+- list
+- number
+- save
+- report
+- capture
+- chronicle
+- history
+- set
