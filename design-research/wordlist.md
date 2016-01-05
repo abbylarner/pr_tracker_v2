@@ -110,7 +110,6 @@
 - chronicle
 - history
 - set
-
 - sweat
 - hard
 - exercise
@@ -121,7 +120,6 @@
 - groan
 - breathe
 - grunt
-
 - footing
 - grounding
 - stance
@@ -132,3 +130,13 @@
 - core
 - exert
 - explode
+- rugged
+- raw
+- unfinished
+- exposed
+- rust
+- industrial
+- firm
+- wrought
+- sharpened
+- forged
