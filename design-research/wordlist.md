@@ -1,77 +1,78 @@
 # PR Tracker Wordlist
-health
-fitness
-gym
-weight
-lift
-sport
-compete
-personal
-best
-record
 
-freedom
-happiness
-intelligence
-security
-strength
-wealth
-self
-care
-medicine
-prevent
+- health
+- fitness
+- gym
+- weight
+- lift
+- sport
+- compete
+- personal
+- best
+- record
 
-beauty
-capability
-competence
-shape
-ability
-aptitude
-endurance
-excellence
-flexibility
-vigor
+- freedom
+- happiness
+- intelligence
+- security
+- strength
+- wealth
+- self
+- care
+- medicine
+- prevent
 
-center
-club
-facility
-clinic
-playground
-spa
-studio
-active
-buff
-pump
+- beauty
+- capability
+- competence
+- shape
+- ability
+- aptitude
+- endurance
+- excellence
+- flexibility
+- vigor
 
-gravity
-heft
-load
-burden
-feather
-light
-heavy
-loss
-gain
-resistance
+- center
+- club
+- facility
+- clinic
+- playground
+- spa
+- studio
+- active
+- buff
+- pump
 
-bear
-boost
-crank
-elevate
-encourage
-float
-heave
-hoist
-raise
-support
+- gravity
+- heft
+- load
+- burden
+- feather
+- light
+- heavy
+- loss
+- gain
+- resistance
 
-fun
-game
-play
-swell
-athlete
-entertainment
-adventure
-winning
-compete
-fight
+- bear
+- boost
+- crank
+- elevate
+- encourage
+- float
+- heave
+- hoist
+- raise
+- support
+
+- fun
+- game
+- play
+- swell
+- athlete
+- entertainment
+- adventure
+- winning
+- compete
+- fight
