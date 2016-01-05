@@ -80,3 +80,13 @@
 - oppose
 - league
 - struggle
+- essential
+- individual
+- movable
+- physical
+- private
+- collective
+- compound
+- demonstrative
+- human
+- work
