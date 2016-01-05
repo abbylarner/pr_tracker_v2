@@ -68,5 +68,15 @@
 - entertainment
 - adventure
 - winning
-- compete
 - fight
+- contend
+- race
+- strive
+- contest
+- program
+- defend
+- dispute
+- match
+- oppose
+- league
+- struggle
