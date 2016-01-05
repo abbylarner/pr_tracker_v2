@@ -121,3 +121,14 @@
 - groan
 - breathe
 - grunt
+
+- footing
+- grounding
+- stance
+- sturdy
+- balance
+- power
+- energy
+- core
+- exert
+- explode
