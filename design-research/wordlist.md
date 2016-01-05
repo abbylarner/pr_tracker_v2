@@ -42,3 +42,14 @@ studio
 active
 buff
 pump
+
+gravity
+heft
+load
+burden
+feather
+light
+heavy
+loss
+gain
+resistance
