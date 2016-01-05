@@ -53,3 +53,14 @@ heavy
 loss
 gain
 resistance
+
+bear
+boost
+crank
+elevate
+encourage
+float
+heave
+hoist
+raise
+support
