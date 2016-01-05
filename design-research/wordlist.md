@@ -31,3 +31,14 @@ endurance
 excellence
 flexibility
 vigor
+
+center
+club
+facility
+clinic
+playground
+spa
+studio
+active
+buff
+pump
