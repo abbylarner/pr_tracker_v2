@@ -1,3 +1,4 @@
 # PR Tracker Inspiration
 
-- http://www.crossfitrenew.org/
+- [CrossFit Renew](http://www.crossfitrenew.org)
+- [NorCal CrossFit](http://www.norcalcrossfit.com)
